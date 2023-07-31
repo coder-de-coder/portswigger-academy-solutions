@@ -35,6 +35,7 @@ web-security-academy.net/filter?category=Accessories%27%20UNION%20SELECT%20NULL,
 ### SQL injection UNION attack, finding a column containing text
 
 Hit and trial to find the number of columns in the default query.
+![image](https://github.com/coder-de-coder/portswigger-academy-solutions/assets/108211570/27b99d53-31d9-4f6d-87de-130f15dc6258)
 
 (BurpSuit ScreenShot shows that we hit the target with 3 NULLs)
 
