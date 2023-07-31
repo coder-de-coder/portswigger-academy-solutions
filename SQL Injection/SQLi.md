@@ -31,3 +31,16 @@ For SQL Union attack, the correct number of entries being requested in the orign
 ```
 web-security-academy.net/filter?category=Accessories%27%20UNION%20SELECT%20NULL,NULL,NULL--
 ```
+
+### SQL injection UNION attack, finding a column containing text
+
+Hit and trial to find the number of columns in the default query.
+
+(BurpSuit ScreenShot shows that we hit the target with 3 NULLs)
+
+Now try replacing each NULL one by one with the given random string in the lab using single quotes.
+
+Payload =>
+```
+web-security-academy.net/filter?category=Accessories+UNION+SELECT+NULL,{Your string},NULL--
+```
